@@ -5,6 +5,7 @@ on:
   workflow_call:
     inputs:
       project-name:
+        required: true
         description: NuGet name.
         type: string
       
