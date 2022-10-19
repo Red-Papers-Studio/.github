@@ -54,11 +54,11 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        if: ${{ inputs.test }}
+        if: ${{ inputs.run-tests }}
         run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test-results.trx" --results-directory "TestResults"
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
-        if: ${{ inputs.test }} && (success() || failure())
+        if: ${{ inputs.run-tests }} && (success() || failure())
         with:
           name: xUnit Tests
           path: TestResults/test-results.trx
