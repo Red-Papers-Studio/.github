@@ -63,6 +63,7 @@ jobs:
           name: xUnit Tests
           path: TestResults/testResults*.trx
           reporter: dotnet-trx
+          fail-on-error: true
       - name: Publish
         run: dotnet publish -c ${{ inputs.publish-configuration }} -o publish
       - name: Upload a Build Artifact
