@@ -39,7 +39,8 @@ jobs:
           path: ${{ inputs.project-folder }}/bin/Release/ 
   
   release:
-    name: Push .NET NuGet package to Github packages.
+    name: Push .NET NuGet package to Github packages.  
+    needs: build
     runs-on: ubuntu-latest
     
     steps:
