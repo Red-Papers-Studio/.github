@@ -35,7 +35,7 @@ jobs:
       - name: Upload NuGet package to GitHub
         uses: actions/upload-artifact@v3
         with:
-          name: nugetPackage
+          name: nugetPackage${{ github.run_id }}
           path: ${{ inputs.project-folder }}/bin/Release/ 
   
   release:
@@ -47,11 +47,9 @@ jobs:
       - name: Download nuget package artifact
         uses: actions/download-artifact@v3
         with:
-          name: nugetPackage
+          name: nugetPackage${{ github.run_id }}
       - name: Prep packages
         run: dotnet nuget add source --username danila032040 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Red-Papers-Studio/index.json"
-      - name: Display structure of downloaded files
-        run: ls -R
       - name: Push package to GitHub packages
-        run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"    
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"    
       
