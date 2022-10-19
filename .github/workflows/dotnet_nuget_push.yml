@@ -4,11 +4,7 @@ name: Push .NET NuGet package
 on:
   workflow_call:
     inputs:
-      runs-on:
-        description: Platform to execute on
-        type: string
-        default: ubuntu-latest
-        
+      
       dotnet-version:
         description: Version of dotnet to use
         type: string
@@ -21,9 +17,9 @@ on:
       
 jobs:
   build:
-    name: Build .NET app
+    name: Build .NET NuGet package.
     
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ${{ inputs.project-folder }}
@@ -40,5 +36,19 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nugetPackage
-          path: /bin/Release/ 
-
+          path: ${{ inputs.project-folder }}/bin/Release/ 
+  
+  release:
+    name: Push .NET NuGet package to Github packages.
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download nuget package artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: nugetPackage
+      - name: Prep packages
+        run: dotnet nuget add source --username danila032040 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Red-Papers-Studio/index.json"
+      - name: Push package to GitHub packages
+        run: dotnet nuget push nugetPackage/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"    
+      
