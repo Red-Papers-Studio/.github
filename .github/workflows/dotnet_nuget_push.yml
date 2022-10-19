@@ -4,7 +4,11 @@ name: Push .NET NuGet package
 on:
   workflow_call:
     inputs:
-      
+      runs-on:
+        description: Platform to execute on
+        type: string
+        default: ubuntu-latest
+        
       dotnet-version:
         description: Version of dotnet to use
         type: string
@@ -19,7 +23,7 @@ jobs:
   build:
     name: Build .NET app
     
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runs-on }}
     defaults:
       run:
         working-directory: ${{ inputs.project-folder }}
