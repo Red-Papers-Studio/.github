@@ -1,0 +1,40 @@
+
+name: Push .NET NuGet package
+
+on:
+  workflow_call:
+    inputs:
+      
+      dotnet-version:
+        description: Version of dotnet to use
+        type: string
+        default: 5.0.x
+      
+      project-folder:
+        description: The folder containing the project to build
+        type: string
+        default: .
+      
+jobs:
+  build:
+    name: Build .NET app
+    
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ inputs.project-folder }}
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Build and Pack NuGet package
+        run: dotnet pack -c Release
+      - name: Upload NuGet package to GitHub
+        uses: actions/upload-artifact@v3
+        with:
+          name: nugetPackage
+          path: /bin/Release/ 
+
