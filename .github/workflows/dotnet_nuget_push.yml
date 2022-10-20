@@ -4,11 +4,15 @@ name: Push .NET NuGet package
 on:
   workflow_call:
     inputs:
+      package-version:
+        description: NuGet package version
+        default: 
+        
       project-name:
         required: true
-        description: NuGet name.
+        description: Project name
         type: string
-      
+    
       dotnet-version:
         description: Version of dotnet to use
         type: string
@@ -35,7 +39,7 @@ jobs:
         with:
           dotnet-version: ${{ inputs.dotnet-version }}
       - name: Build and Pack NuGet package
-        run: dotnet pack -c Release
+        run: dotnet pack -p:Version='${{ inputs.package-version }}' -c Release
       - name: Upload NuGet package to GitHub
         uses: actions/upload-artifact@v3
         with:
