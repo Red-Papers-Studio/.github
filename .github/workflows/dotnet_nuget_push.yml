@@ -41,7 +41,8 @@ jobs:
           dotnet-version: ${{ inputs.dotnet-version }}
       - name: Build and Pack NuGet package
         run: |
-          if [ ${{ inputs.package-version }} = "" ]; then
+          if [ -n ${{ inputs.package-version }} ] 
+          then
             dotnet pack -c Release
           else 
             dotnet pack -p:Version='${{ inputs.package-version }}' -c Release
