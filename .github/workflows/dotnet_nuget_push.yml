@@ -6,7 +6,8 @@ on:
     inputs:
       package-version:
         description: NuGet package version
-        default: 
+        default: ""
+        type: string
         
       project-name:
         required: true
