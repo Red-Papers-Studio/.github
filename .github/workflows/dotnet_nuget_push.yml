@@ -1,25 +1,25 @@
-
+---
 name: Push .NET NuGet package
 
 on:
   workflow_call:
     inputs:
-      package-version:
+      package_version:
         description: NuGet package version
         default: ""
         type: string
         
-      project-name:
+      project_name:
         required: true
         description: Project name
         type: string
     
-      dotnet-version:
+      dotnet_version:
         description: Version of dotnet to use
         type: string
         default: 5.0.x
       
-      project-folder:
+      project_path:
         description: The folder containing the project to build
         type: string
         default: .
@@ -31,28 +31,28 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ${{ inputs.project-folder }}
+        working-directory: ${{ inputs.project_path }}
     
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-version: ${{ inputs.dotnet_version }}
       - name: Build and Pack NuGet package
         run: |
-          if [ -n ${{ inputs.package-version }} ] 
+          if [ -n ${{ inputs.package_version }} ] 
           then
             dotnet pack -c Release
           else 
-            dotnet pack -p:Version='${{ inputs.package-version }}' -c Release
+            dotnet pack -p:Version='${{ inputs.package_version }}' -c Release
           fi
           
       - name: Upload NuGet package to GitHub
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.project-name }}_NuGet_package
-          path: ${{ inputs.project-folder }}/bin/Release/ 
+          name: ${{ inputs.project_name }}_NuGet_package
+          path: ${{ inputs.project_path }}/bin/Release/ 
   
   release:
     name: Push .NET NuGet package to Github packages.  
@@ -63,7 +63,7 @@ jobs:
       - name: Download nuget package artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${{ inputs.project-name }}_NuGet_package
+          name: ${{ inputs.project_name }}_NuGet_package
       - name: Prep packages
         run: dotnet nuget add source --username danila032040 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Red-Papers-Studio/index.json"
       - name: Push package to GitHub packages

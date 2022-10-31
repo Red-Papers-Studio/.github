@@ -1,35 +1,35 @@
-
+---
 name: Build .NET application
 
 on:
   workflow_call:
     inputs:
-      runs-on:
+      runs_on:
         description: Platform to execute on
         type: string
         default: ubuntu-latest
       
-      dotnet-version:
+      dotnet_version:
         description: Version of dotnet to use
         type: string
         default: 5.0.x
       
-      project-folder:
+      project_path:
         description: The folder containing the project to build
         type: string
         default: .
       
-      run-tests:
+      run_tests:
         description: Run tests
         type: boolean
         default: true
       
-      publish-configuration:
+      publish_configuration:
         description: Configuration to publish
         type: string
         default: Release
       
-      artifact-name:
+      artifact_name:
         description: Name of the artifact to upload
         type: string
         default: Published Application
@@ -38,38 +38,38 @@ jobs:
   build:
     name: Build .NET app
     
-    runs-on: ${{ inputs.runs-on }}
+    runs-on: ${{ inputs.runs_on }}
     defaults:
       run:
-        working-directory: ${{ inputs.project-folder }}
+        working-directory: ${{ inputs.project_path }}
     
     steps:
       - uses: actions/checkout@v3
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ inputs.dotnet-version }}
+          dotnet-version: ${{ inputs.dotnet_version }}
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        if: ${{ inputs.run-tests }}
+        if: ${{ inputs.run_tests }}
         run: dotnet test --no-build --verbosity normal --logger "trx;LogFilePrefix=testResults" --results-directory "TestResults"
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
-        if: ${{ inputs.run-tests }} && (success() || failure())
+        if: ${{ inputs.run_tests }} && (success() || failure())
         with:
           name: xUnit Tests
           path: TestResults/testResults*.trx
           reporter: dotnet-trx
           fail-on-error: true
       - name: Publish
-        run: dotnet publish -c ${{ inputs.publish-configuration }} -o publish
+        run: dotnet publish -c ${{ inputs.publish_configuration }} -o publish
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ inputs.artifact-name }}
-          path: ${{ inputs.project-folder }}/publish/**
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.project_folder }}/publish/**
           if-no-files-found: error
 
