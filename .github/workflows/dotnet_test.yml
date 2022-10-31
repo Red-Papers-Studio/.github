@@ -1,0 +1,54 @@
+﻿---
+name: Test .NET application
+
+on:
+  workflow_call:
+    inputs:
+      runs_on:
+        description: Platform to execute on
+        type: string
+        default: ubuntu-latest
+      
+      dotnet_version:
+        description: Version of dotnet to use
+        type: string
+        default: 5.0.x
+      
+      test_path:
+        description: The folder containing the project to build
+        type: string
+        default: .
+jobs:
+  test:
+    runs-on: ${{ inputs.runs_on }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.test_path }}
+    
+    steps:
+      - name: Checkout code
+      - uses: actions/checkout@v3
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+          
+      - name: Restore dependencies
+        run: dotnet restore
+        
+      - name: Build
+        run: dotnet build --no-restore
+        
+      - name: Test
+        run: dotnet test --no-build --verbosity normal --logger "trx;LogFilePrefix=testResults" --results-directory "TestResults"
+        
+      - name: Test Report
+        uses: dorny/test-reporter@v1.6.0
+        if: (success() || failure())
+        with:
+          name: xUnit Tests
+          path: TestResults/testResults*.trx
+          reporter: dotnet-trx
+          fail-on-error: true
+
