@@ -24,7 +24,8 @@ on:
         type: string
         default: .
 jobs:
-  Test:
+  test:
+    name: ${{ inputs.report_name }}
     runs-on: ${{ inputs.runs_on }}
     defaults:
       run:
