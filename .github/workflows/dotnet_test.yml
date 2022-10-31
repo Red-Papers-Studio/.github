@@ -25,7 +25,7 @@ on:
         default: .
 jobs:
   test:
-    name: ${{ inputs.report_name }}
+    name: Test .NET app
     runs-on: ${{ inputs.runs_on }}
     defaults:
       run:
