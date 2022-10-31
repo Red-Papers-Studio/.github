@@ -41,14 +41,14 @@ jobs:
         run: dotnet build --no-restore
         
       - name: Test
-        run: dotnet test --no-build --verbosity normal --logger "trx;LogFilePrefix=testResults" #--results-directory "TestResults"
+        run: dotnet test --no-build --logger "trx;LogFilePrefix=testResults" --results-directory "TestResults"
         
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
         if: (success() || failure())
         with:
           name: xUnit Tests
-          path: TestResults/testResults*.trx
+          path: ${{ inputs.test_path}}/TestResults/testResults*.trx
           reporter: dotnet-trx
           fail-on-error: true
 
