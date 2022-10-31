@@ -13,13 +13,18 @@ on:
         description: Version of dotnet to use
         type: string
         default: 5.0.x
-      
+        
+      report_name: 
+        description: Report name
+        type: string
+        default: "Tests report"
+        
       test_path:
         description: The folder containing the project to build
         type: string
         default: .
 jobs:
-  test:
+  Test:
     runs-on: ${{ inputs.runs_on }}
     defaults:
       run:
@@ -41,14 +46,15 @@ jobs:
         run: dotnet build --no-restore
         
       - name: Test
-        run: dotnet test --no-build --logger "trx;LogFilePrefix=testResults" --results-directory "TestResults"
+        run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx" --results-directory "TestResults"
         
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
         if: (success() || failure())
         with:
-          name: xUnit Tests
-          path: ${{ inputs.test_path}}/TestResults/testResults*.trx
+          name: ${{ inputs.report_name }}
+          working-directory: ${{ inputs.test_path }}
+          path: TestResults/test-results.trx
           reporter: dotnet-trx
           fail-on-error: true
 
