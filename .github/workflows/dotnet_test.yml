@@ -48,7 +48,7 @@ jobs:
         if: (success() || failure())
         with:
           name: xUnit Tests
-          path: testResults*.trx #./TestResults/
+          path: TestResults/testResults*.trx
           reporter: dotnet-trx
           fail-on-error: true
 
