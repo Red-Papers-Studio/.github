@@ -14,10 +14,10 @@ on:
         type: string
         default: 5.0.x
         
-      report_name: 
-        description: Report name
+      project_name:
+        description: Project name
         type: string
-        default: "Tests report"
+        default: "Project"
         
       test_path:
         description: The folder containing the project to build
@@ -57,7 +57,7 @@ jobs:
         uses: dorny/test-reporter@v1.6.0
         if: (success() || failure())
         with:
-          name: ${{ inputs.report_name }}
+          name: Test results for ${{ inputs.project_name }}
           working-directory: ${{ inputs.test_path }}
           path: TestResults/test-results.trx
           reporter: dotnet-trx
@@ -78,8 +78,9 @@ jobs:
           
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
+        if: (success() || failure()) && github.event_name == 'pull_request'
         with:
           recreate: true
           path: code-coverage-results.md
+          message: Code Coverage results for ${{ inputs.project_name }}
 
