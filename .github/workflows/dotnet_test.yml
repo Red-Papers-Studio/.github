@@ -81,6 +81,7 @@ jobs:
         if: (success() || failure()) && github.event_name == 'pull_request'
         with:
           recreate: true
+          hide_and_recreate: true
           path: code-coverage-results.md
-          message: Code Coverage results for ${{ inputs.project_name }}
+          header: Code Coverage results for ${{ inputs.project_name }}
 
