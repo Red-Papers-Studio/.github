@@ -28,6 +28,10 @@ on:
         description: Name of the artifact to upload
         type: string
         default: Published Application
+        
+      prepare_rps_packages:
+        type: boolean
+        default: true
 
 jobs:
   build:
@@ -46,6 +50,10 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ inputs.dotnet_version }}
+          
+      - name: Prepare RPS packages
+        if: ${{ inputs.prepare_rps_packages }}
+        run: dotnet nuget add source --username danila032040 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Red-Papers-Studio/index.json"
           
       - name: Restore dependencies
         run: dotnet restore
