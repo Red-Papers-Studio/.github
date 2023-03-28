@@ -42,7 +42,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ inputs.dotnet_version }}
+          dotnet-version: 7.0.x
           
       - name: Prepare RPS packages
         if: ${{ inputs.prepare_rps_packages }}
