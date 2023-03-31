@@ -58,7 +58,7 @@ jobs:
         run: dotnet test  --no-build 
                           --verbosity normal 
                           --collect:"XPlat Code Coverage" 
-                          --logger "trx;LogFileName=test-results.trx" 
+                          --logger "trx;LogFilePrefix=test-results" 
                           --results-directory "TestResults"
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
@@ -66,7 +66,7 @@ jobs:
         with:
           name: Test results for ${{ inputs.project_name }}
           working-directory: ${{ inputs.test_path }}
-          path: TestResults/test-results.trx
+          path: TestResults/test-results*.trx
           reporter: dotnet-trx
           fail-on-error: true         
         
