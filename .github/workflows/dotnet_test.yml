@@ -27,6 +27,10 @@ on:
       prepare_rps_packages:
         type: boolean
         default: true
+        
+      merge_code_coverage:
+        type: boolean
+        default: true
 jobs:
   test:
     name: Test .NET app
@@ -75,6 +79,7 @@ jobs:
       
       - name: Merge code coverage files
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.19
+        if: ${{ merge_code_coverage }}
         with:
           reports: "TestResults/**/coverage.cobertura.xml" # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
           targetdir: './TestResults' # REQUIRED # The directory where the generated report should be saved.
@@ -83,9 +88,23 @@ jobs:
        
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && ${{ merge_code_coverage }}
         with:
           filename: ${{ inputs.test_path}}/TestResults/cobertura.xml
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+          
+      - name: Code Coverage Report
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        if: github.event_name == 'pull_request' && !${{ merge_code_coverage }}
+        with:
+          filename: ${{ inputs.test_path}}/TestResults/**/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
