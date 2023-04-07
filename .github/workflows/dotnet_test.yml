@@ -73,7 +73,10 @@ jobs:
           fail-on-error: true 
           
       - name: Code Coverage
-        run: dotnet test  -p:CollectCoverage="true" 
+        run: dotnet test  --no-restore
+                          --no-build
+                          --verbosity minimal 
+                          -p:CollectCoverage="true" 
                           -p:CoverletOutput="./CoverageResults/" 
                           -p:MergeWith="./CoverageResults/coverage.json" 
                           -p:CoverletOutputFormat="json%2ccobertura"
