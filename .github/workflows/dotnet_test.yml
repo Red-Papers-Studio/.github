@@ -100,6 +100,7 @@ jobs:
           
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
+        if: (success() || failure())
         with:
           name: code-coverage-report
           path: ${{ inputs.test_path}}/CoverageResults/coverage.cobertura.xml
