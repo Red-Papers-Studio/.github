@@ -103,7 +103,7 @@ jobs:
         if: (success() || failure())
         with:
           name: code-coverage-report
-          path: ${{ inputs.test_path}}/CoverageResults/*
+          path: ${{ inputs.test_path}}/
     
       
 
