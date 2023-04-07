@@ -75,7 +75,6 @@ jobs:
         run: dotnet test  --no-restore
                           --no-build
                           --verbosity minimal 
-                          --collect:"XPlat Code Coverage" 
                           -p:CollectCoverage="true" 
                           -p:CoverletOutput="../CoverageResults/" 
                           -p:MergeWith="../CoverageResults/coverage.json" 
@@ -86,7 +85,7 @@ jobs:
         uses: irongut/CodeCoverageSummary@v1.3.0
         if: github.event_name == 'pull_request'
         with:
-          filename: ${{ inputs.test_path}}/../TestResults/coverage.cobertura.xml
+          filename: ${{ inputs.test_path}}/../CoverageResults/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
