@@ -60,11 +60,12 @@ jobs:
                           --verbosity normal 
                           --collect:"XPlat Code Coverage" 
                           --logger "trx;LogFilePrefix=test-results" 
-                          --results-directory "TestResults/coverage.cobertura.xml"
+                          --results-directory "TestResults"
                           -p:CollectCoverage="true" 
-                          -p:CoverletOutput="TestResults" 
+                          -p:CoverletOutput="TestResults/coverage.cobertura.xml" 
                           -p:MergeWith="TestResults/cobertura.json" 
-                          -p:CoverletOutputFormat="json%2ccobertura" 
+                          -p:CoverletOutputFormat="json%2ccobertura"
+                          -m:1
                          
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
