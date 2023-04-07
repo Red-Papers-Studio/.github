@@ -60,7 +60,7 @@ jobs:
                           --verbosity normal 
                           --collect:"XPlat Code Coverage" 
                           --logger "trx;LogFilePrefix=test-results" 
-                          --results-directory "TestResults"
+                          --results-directory "TestResults/coverage.cobertura.xml"
                           -p:CollectCoverage="true" 
                           -p:CoverletOutput="TestResults" 
                           -p:MergeWith="TestResults/cobertura.json" 
@@ -80,7 +80,7 @@ jobs:
         uses: irongut/CodeCoverageSummary@v1.3.0
         if: github.event_name == 'pull_request'
         with:
-          filename: ${{ inputs.test_path}}/TestResults/**/coverage.cobertura.xml
+          filename: ${{ inputs.test_path}}/TestResults/coverage.cobertura.xml
           badge: true
           fail_below_min: true
           format: markdown
