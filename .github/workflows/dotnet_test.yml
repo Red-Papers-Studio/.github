@@ -77,8 +77,8 @@ jobs:
                           --no-build
                           --verbosity minimal 
                           -p:CollectCoverage="true" 
-                          -p:CoverletOutput= ${{ inputs.test_path}}/CoverageResults/
-                          -p:MergeWith=${{ inputs.test_path}}/CoverageResults/coverage.json
+                          -p:CoverletOutput= "../CoverageResults/"
+                          -p:MergeWith="../CoverageResults/coverage.json"
                           -p:CoverletOutputFormat="json%2ccobertura"
         
       - name: Code Coverage Report
