@@ -79,7 +79,7 @@ jobs:
       
       - name: Merge code coverage files
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.19
-        if: ${{ merge_code_coverage }}
+        if: ${{ inputs.merge_code_coverage }}
         with:
           reports: "TestResults/**/coverage.cobertura.xml" # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
           targetdir: './TestResults' # REQUIRED # The directory where the generated report should be saved.
@@ -88,7 +88,7 @@ jobs:
        
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
-        if: github.event_name == 'pull_request' && ${{ merge_code_coverage }}
+        if: github.event_name == 'pull_request' && ${{ inputs.merge_code_coverage }}
         with:
           filename: ${{ inputs.test_path}}/TestResults/cobertura.xml
           badge: true
@@ -102,7 +102,7 @@ jobs:
           
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
-        if: github.event_name == 'pull_request' && !${{ merge_code_coverage }}
+        if: github.event_name == 'pull_request' && !${{ inputs.merge_code_coverage }}
         with:
           filename: ${{ inputs.test_path}}/TestResults/**/coverage.cobertura.xml
           badge: true
