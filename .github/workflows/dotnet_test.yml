@@ -64,7 +64,7 @@ jobs:
                           -p:CollectCoverage="true" 
                           -p:CoverletOutput="TestResults" 
                           -p:MergeWith="TestResults/cobertura.json" 
-                          -p:CoverletOutputFormat="cobertura" 
+                          -p:CoverletOutputFormat="json%2ccobertura" 
                          
       - name: Test Report
         uses: dorny/test-reporter@v1.6.0
