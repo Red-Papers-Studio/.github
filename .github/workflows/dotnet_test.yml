@@ -96,6 +96,13 @@ jobs:
           recreate: true
           path: code-coverage-results.md
           header: Code Coverage results for ${{ inputs.project_name }}
+          
+          
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: ${{ inputs.test_path}}/CoverageResults/coverage.cobertura.xml
     
       
 
