@@ -61,8 +61,8 @@ jobs:
                           --logger "trx;LogFilePrefix=test-results" 
                           --results-directory "./TestResults"
                           -p:CollectCoverage="true" 
-                          -p:CoverletOutput= "../CoverageResults/"
-                          -p:MergeWith="../CoverageResults/coverage.json"
+                          -p:CoverletOutput= "./CoverageResults/"
+                          -p:MergeWith="./CoverageResults/coverage.json"
                           -p:CoverletOutputFormat="json%2ccobertura"
                           
                                                  
