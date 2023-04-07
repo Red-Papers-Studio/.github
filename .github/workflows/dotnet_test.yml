@@ -74,14 +74,14 @@ jobs:
         uses: b3b00/coverlet-action@1.2.5
         with:
           testProject: ${{ inputs.test_path }}
-          output: 'coverage.cobertura.xml'
+          output: 'coverage.xml'
           outputFormat: 'cobertura'
         
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
         if: github.event_name == 'pull_request'
         with:
-          filename: ${{ inputs.test_path}}/coverage.cobertura.xml
+          filename: ${{ inputs.test_path}}/coverage.xml
           badge: true
           fail_below_min: true
           format: markdown
