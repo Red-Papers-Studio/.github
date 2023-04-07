@@ -60,6 +60,10 @@ jobs:
                           --verbosity minimal 
                           --logger "trx;LogFilePrefix=test-results" 
                           --results-directory "./TestResults"
+                          -p:CollectCoverage="true" 
+                          -p:CoverletOutput= "../CoverageResults/"
+                          -p:MergeWith="../CoverageResults/coverage.json"
+                          -p:CoverletOutputFormat="json%2ccobertura"
                           
                                                  
       - name: Test Report
@@ -70,16 +74,7 @@ jobs:
           working-directory: ${{ inputs.test_path }}
           path: TestResults/test-results*.trx
           reporter: dotnet-trx
-          fail-on-error: true 
-          
-      - name: Code Coverage
-        run: dotnet test  --no-restore
-                          --no-build
-                          --verbosity minimal 
-                          -p:CollectCoverage="true" 
-                          -p:CoverletOutput= "../CoverageResults/"
-                          -p:MergeWith="../CoverageResults/coverage.json"
-                          -p:CoverletOutputFormat="json%2ccobertura"
+          fail-on-error: true                         
         
       - name: Code Coverage Report
         uses: irongut/CodeCoverageSummary@v1.3.0
