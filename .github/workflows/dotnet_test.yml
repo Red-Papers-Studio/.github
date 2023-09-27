@@ -31,6 +31,10 @@ on:
       merge_code_coverage:
         type: boolean
         default: true
+
+      dotnet_test_params:
+        type: string
+        default: ''
 jobs:
   test:
     name: Test .NET app
@@ -65,6 +69,7 @@ jobs:
                           --logger "trx;LogFilePrefix=test-results" 
                           --results-directory "./TestResults"
                           --collect:"XPlat Code Coverage"
+                          ${{ dotnet_test_params }}
                           
                                                  
       - name: Test Report
