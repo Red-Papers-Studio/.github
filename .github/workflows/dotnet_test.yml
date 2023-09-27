@@ -69,7 +69,7 @@ jobs:
                           --logger "trx;LogFilePrefix=test-results" 
                           --results-directory "./TestResults"
                           --collect:"XPlat Code Coverage"
-                          ${{ dotnet_test_params }}
+                          ${{ inputs.dotnet_test_params }}
                           
                                                  
       - name: Test Report
